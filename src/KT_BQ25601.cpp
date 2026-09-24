@@ -110,3 +110,20 @@ bool KT_BQ25601::enablePFM(bool enable){
   return updateReg(!enable, KT_BQ25601_REG01, KT_BQ25601_ENABLE_PFM_MASK, 7);
 }
 
+bool KT_BQ25601::setCurrentLImitOTG(kt_bq25601_current_limit_otg_enum limit){
+  return updateReg(limit, KT_BQ25601_REG02, KT_BQ25601_SET_CURRENT_LIMIT_OTG_MASK, 7);
+}
+
+bool KT_BQ25601::enableQ1FullOn(bool enable) {
+  return updateReg(enable, KT_BQ25601_REG02, KT_BQ25601_Q1_FULLON_MASK, 6);
+}
+
+bool KT_BQ25601::setChargeCurrent(uint16_t current_mA){
+  if(current_mA < 0) current_mA = 100;
+  else if(current_mA > 3000) current_mA = 3000;
+
+  current_mA /= 60;
+
+  return updateReg(current_mA, KT_BQ25601_REG02, KT_BQ25601_CHARGE_CURRENT_MASK, 0);
+}
+

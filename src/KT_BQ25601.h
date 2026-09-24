@@ -5,8 +5,9 @@
 
 #define KT_BQ25601_ADDR 0x6B
 
-#define KT_BQ25601_REG01 0x01
 #define KT_BQ25601_REG00 0x00
+#define KT_BQ25601_REG01 0x01
+#define KT_BQ25601_REG02 0x02
 #define KT_BQ25601_REG05 0x05
 
 #define KT_BQ25601_ENABLE_CHARGING_MASK 0x10
@@ -19,6 +20,9 @@
 #define KT_BQ25601_ENABLE_HIZ_MASK 0x80
 #define KT_BQ25601_ENABLE_STAT_MASK 0x60
 #define KT_BQ25601_SET_INPUT_CURRENT_LIMIT_MASK 0x1F
+#define KT_BQ25601_SET_CURRENT_LIMIT_OTG_MASK 0x80
+#define KT_BQ25601_Q1_FULLON_MASK 0x40
+#define KT_BQ25601_CHARGE_CURRENT_MASK 0x3F
 
 enum kt_bq25601_watchdog_enum {
     KT_BQ25601_WATCHDOG_NONE = 0,
@@ -48,6 +52,11 @@ enum kt_bq25601_enable_stat_enum {
     KT_BQ25601_MIN_VOLTAGE_OTG_2V5 = 1
 };
 
+enum kt_bq25601_current_limit_otg_enum {
+    KT_BQ25601_CURRENT_LIMIT_OTG_0A5 = 0,
+    KT_BQ25601_CURRENT_LIMIT_OTG_1A2 = 1
+};
+
 class KT_BQ25601
 {
     public:
@@ -65,6 +74,9 @@ class KT_BQ25601
     bool enableHIZ(bool enable);
     bool enableSTAT(kt_bq25601_min_voltage_otg_enum enable);
     bool setInputCurrentLimit(uint16_t current_mA);
+    bool setCurrentLImitOTG(kt_bq25601_current_limit_otg_enum limit);
+    bool enableQ1FullOn(bool enable);
+    bool setChargeCurrent(uint16_t current_mA);
 
     void setDebugPort(Stream &debugPort) { _debugPort = &debugPort; }
     void disableDebug() { _debugPort = nullptr; }
