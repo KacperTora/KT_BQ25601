@@ -18,6 +18,7 @@
 #define KT_BQ25601_ENABLE_PFM_MASK 0x80
 #define KT_BQ25601_ENABLE_HIZ_MASK 0x80
 #define KT_BQ25601_ENABLE_STAT_MASK 0x60
+#define KT_BQ25601_SET_INPUT_CURRENT_LIMIT_MASK 0x1F
 
 enum kt_bq25601_watchdog_enum {
     KT_BQ25601_WATCHDOG_NONE = 0,
@@ -63,6 +64,7 @@ class KT_BQ25601
     bool enablePFM(bool enable);
     bool enableHIZ(bool enable);
     bool enableSTAT(kt_bq25601_min_voltage_otg_enum enable);
+    bool setInputCurrentLimit(uint16_t current_mA);
 
     void setDebugPort(Stream &debugPort) { _debugPort = &debugPort; }
     void disableDebug() { _debugPort = nullptr; }

@@ -72,6 +72,16 @@ bool KT_BQ25601::enableSTAT(kt_bq25601_min_voltage_otg_enum enable){
   return updateReg(enable, KT_BQ25601_REG00, KT_BQ25601_ENABLE_STAT_MASK, 5);
 }
 
+bool KT_BQ25601::setInputCurrentLimit(uint16_t current_mA){
+
+  if(current_mA < 100) current_mA = 100;
+  else if(current_mA > 3200) current_mA = 3200;
+
+  current_mA = (current_mA - 100) / 100;
+
+  return updateReg(current_mA, KT_BQ25601_REG00, KT_BQ25601_SET_INPUT_CURRENT_LIMIT_MASK, 0);
+}
+
 bool KT_BQ25601::enableCharging(bool enable){
   return updateReg(enable, KT_BQ25601_REG01, KT_BQ25601_ENABLE_CHARGING_MASK, 4);
 }
