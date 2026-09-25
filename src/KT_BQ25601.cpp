@@ -192,3 +192,23 @@ bool KT_BQ25601::setThermalRegulationThreshold(kt_bq25601_thermal_regulation_thr
 bool KT_BQ25601::setCoolTemperatureCurrentLimit(kt_bq25601_cool_temperature_current_limit_otg_enum limit){
   return updateReg(limit, KT_BQ25601_REG05, KT_BQ25601_COOL_TEMPERATURE_CURRENT_LIMIT_MASK, 0);
 }
+
+// REG06
+
+bool KT_BQ25601::setOVP(kt_bq25601_ovp_enum voltage){
+  return updateReg(voltage, KT_BQ25601_REG06, KT_BQ25601_OVP_MASK, 6);
+}
+
+bool KT_BQ25601::setRegulationVoltageOTG(kt_bq25601_regulation_voltage_otg_enum voltage){
+  return updateReg(voltage, KT_BQ25601_REG06, KT_BQ25601_REGULATION_VOLTAGE_OTG_MASK, 4);
+}
+
+bool KT_BQ25601::setInputVoltageThreshold(uint16_t voltage_mV){
+  if(voltage_mV < 3900) voltage_mV = 3900;
+  else if(voltage_mV > 5400) voltage_mV = 5400;
+
+  voltage_mV = (voltage_mV - 3900) / 100;
+
+  return updateReg(voltage_mV, KT_BQ25601_REG06, KT_BQ25601_INPUT_VOLTAGE_THRESHOLD_MASK, 0);
+}
+
