@@ -29,7 +29,12 @@
 #define KT_BQ25601_TERMINATION_CURRENT_MASK 0x0F
 #define KT_BQ25601_CHARGE_VOLTAGE_MASK 0xF8
 #define KT_BQ25601_TOPOFF_TIMER_MASK 0x06
-#define KT_BQ25601_RECHARGE_THRESHOLD_MASK 0x00
+#define KT_BQ25601_RECHARGE_THRESHOLD_MASK 0x01
+#define KT_BQ25601_ENABLE_TERMINATION_MASK 0x80
+#define KT_BQ25601_ENABLE_SAFETY_TIMER_MASK 0x08
+#define KT_BQ25601_ENABLE_CHARGE_SAFETY_TIMER_MASK 0x04
+#define KT_BQ25601_THERMAL_REGULATION_THRESHOLD_MASK 0x02
+#define KT_BQ25601_COOL_TEMPERATURE_CURRENT_LIMIT_MASK 0x01
 
 enum kt_bq25601_watchdog_enum {
     KT_BQ25601_WATCHDOG_NONE = 0,
@@ -49,12 +54,12 @@ enum kt_bq25601_sys_min_voltage_enum {
     KT_BQ25601_SYS_MIN_VOLTAGE_3V7 = 7
 };
 
-enum kt_bq25601_min_voltage_otg_enum {
+enum kt_bq25601_enable_stat_enum {
     KT_BQ25601_ENABLE_STAT = 0,
     KT_BQ25601_DISBALE_STAT = 3
 };
 
-enum kt_bq25601_enable_stat_enum {
+enum kt_bq25601_min_voltage_otg_enum {
     KT_BQ25601_MIN_VOLTAGE_OTG_2V8 = 0,
     KT_BQ25601_MIN_VOLTAGE_OTG_2V5 = 1
 };
@@ -76,6 +81,16 @@ enum kt_bq25601_recharge_threshold_enum {
     KT_BQ25601_RECHARGE_THRESHOLD_0V2 = 1
 };
 
+enum kt_bq25601_thermal_regulation_threshold_enum {
+    KT_BQ25601_THERMAL_REGULATION_THRESHOLD_90_DEGREES = 0,
+    KT_BQ25601_THERMAL_REGULATION_THRESHOLD_110_DEGREES = 1
+};
+
+enum kt_bq25601_cool_temperature_current_limit_otg_enum {
+    KT_BQ25601_COOL_TEMPERATURE_CURRENT_LIMIT_50_PERCENT = 0,
+    KT_BQ25601_COOL_TEMPERATURE_CURRENT_LIMIT_20_PERCENT = 1
+};
+
 class KT_BQ25601
 {
     public:
@@ -91,7 +106,7 @@ class KT_BQ25601
     bool minVoltageOTG(kt_bq25601_min_voltage_otg_enum voltage);
     bool enablePFM(bool enable);
     bool enableHIZ(bool enable);
-    bool enableSTAT(kt_bq25601_min_voltage_otg_enum enable);
+    bool enableSTAT(kt_bq25601_enable_stat_enum enable);
     bool setInputCurrentLimit(uint16_t current_mA);
     bool setCurrentLImitOTG(kt_bq25601_current_limit_otg_enum limit);
     bool enableQ1FullOn(bool enable);
@@ -101,6 +116,11 @@ class KT_BQ25601
     bool setChargeVoltage(uint16_t voltage_mV);
     bool setTopOffTimer(kt_bq25601_topoff_timer_enum time);
     bool setRechargeThreshold(kt_bq25601_recharge_threshold_enum threshold);
+    bool enableTermination(bool enable);
+    bool enableSafetyTimer(bool enable);
+    bool enableChargeSafetyTimer(bool enable);
+    bool setThermalRegulationThreshold(kt_bq25601_thermal_regulation_threshold_enum threshold);
+    bool setCoolTemperatureCurrentLimit(kt_bq25601_cool_temperature_current_limit_otg_enum limit);
 
     void setDebugPort(Stream &debugPort) { _debugPort = &debugPort; }
     void disableDebug() { _debugPort = nullptr; }

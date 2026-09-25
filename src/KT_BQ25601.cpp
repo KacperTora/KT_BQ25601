@@ -70,7 +70,7 @@ bool KT_BQ25601::enableHIZ(bool enable){
   return updateReg(enable, KT_BQ25601_REG00, KT_BQ25601_ENABLE_HIZ_MASK, 7);
 }
 
-bool KT_BQ25601::enableSTAT(kt_bq25601_min_voltage_otg_enum enable){
+bool KT_BQ25601::enableSTAT(kt_bq25601_enable_stat_enum enable){
   return updateReg(enable, KT_BQ25601_REG00, KT_BQ25601_ENABLE_STAT_MASK, 5);
 }
 
@@ -121,12 +121,11 @@ bool KT_BQ25601::enableQ1FullOn(bool enable) {
 }
 
 bool KT_BQ25601::setChargeCurrent(uint16_t current_mA){
-  if(current_mA < 0) current_mA = 100;
-  else if(current_mA > 3000) current_mA = 3000;
+    if(current_mA > 3000) current_mA = 3000;
 
-  current_mA /= 60;
+    current_mA /= 60;
 
-  return updateReg(current_mA, KT_BQ25601_REG02, KT_BQ25601_CHARGE_CURRENT_MASK, 0);
+    return updateReg(current_mA, KT_BQ25601_REG02, KT_BQ25601_CHARGE_CURRENT_MASK, 0);
 }
 
 // REG03
@@ -168,7 +167,28 @@ bool KT_BQ25601::setRechargeThreshold(kt_bq25601_recharge_threshold_enum thresho
   return updateReg(threshold, KT_BQ25601_REG04, KT_BQ25601_RECHARGE_THRESHOLD_MASK, 0);
 }
 
+// REG05
+
 bool KT_BQ25601::setWatchdog(kt_bq25601_watchdog_enum watchdog){
   return updateReg(watchdog, KT_BQ25601_REG05, KT_BQ25601_SET_WATCHDOG_MASK, 4);
 }
 
+bool KT_BQ25601::enableTermination(bool enable){
+  return updateReg(enable, KT_BQ25601_REG05, KT_BQ25601_ENABLE_TERMINATION_MASK, 7);
+}
+
+bool KT_BQ25601::enableSafetyTimer(bool enable){
+  return updateReg(enable, KT_BQ25601_REG05, KT_BQ25601_ENABLE_SAFETY_TIMER_MASK, 3);
+}
+
+bool KT_BQ25601::enableChargeSafetyTimer(bool enable){
+  return updateReg(enable, KT_BQ25601_REG05, KT_BQ25601_ENABLE_CHARGE_SAFETY_TIMER_MASK, 2);
+}
+
+bool KT_BQ25601::setThermalRegulationThreshold(kt_bq25601_thermal_regulation_threshold_enum threshold){
+  return updateReg(threshold, KT_BQ25601_REG05, KT_BQ25601_THERMAL_REGULATION_THRESHOLD_MASK, 1);
+}
+
+bool KT_BQ25601::setCoolTemperatureCurrentLimit(kt_bq25601_cool_temperature_current_limit_otg_enum limit){
+  return updateReg(limit, KT_BQ25601_REG05, KT_BQ25601_COOL_TEMPERATURE_CURRENT_LIMIT_MASK, 0);
+}
