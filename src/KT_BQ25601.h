@@ -8,6 +8,8 @@
 #define KT_BQ25601_REG00 0x00
 #define KT_BQ25601_REG01 0x01
 #define KT_BQ25601_REG02 0x02
+#define KT_BQ25601_REG03 0x03
+#define KT_BQ25601_REG04 0x04
 #define KT_BQ25601_REG05 0x05
 
 #define KT_BQ25601_ENABLE_CHARGING_MASK 0x10
@@ -23,6 +25,11 @@
 #define KT_BQ25601_SET_CURRENT_LIMIT_OTG_MASK 0x80
 #define KT_BQ25601_Q1_FULLON_MASK 0x40
 #define KT_BQ25601_CHARGE_CURRENT_MASK 0x3F
+#define KT_BQ25601_PRECHARGE_CURRENT_MASK 0xF0
+#define KT_BQ25601_TERMINATION_CURRENT_MASK 0x0F
+#define KT_BQ25601_CHARGE_VOLTAGE_MASK 0xF8
+#define KT_BQ25601_TOPOFF_TIMER_MASK 0x06
+#define KT_BQ25601_RECHARGE_THRESHOLD_MASK 0x00
 
 enum kt_bq25601_watchdog_enum {
     KT_BQ25601_WATCHDOG_NONE = 0,
@@ -57,6 +64,18 @@ enum kt_bq25601_current_limit_otg_enum {
     KT_BQ25601_CURRENT_LIMIT_OTG_1A2 = 1
 };
 
+enum kt_bq25601_topoff_timer_enum {
+    KT_BQ25601_TOPOFF_TIMER_DISABLE = 0,
+    KT_BQ25601_TOPOFF_TIMER_15_MINUTES = 1,
+    KT_BQ25601_TOPOFF_TIMER_30_MINUTES = 2,
+    KT_BQ25601_TOPOFF_TIMER_45_MINUTES = 3
+};
+
+enum kt_bq25601_recharge_threshold_enum {
+    KT_BQ25601_RECHARGE_THRESHOLD_0V1 = 0,
+    KT_BQ25601_RECHARGE_THRESHOLD_0V2 = 1
+};
+
 class KT_BQ25601
 {
     public:
@@ -77,6 +96,11 @@ class KT_BQ25601
     bool setCurrentLImitOTG(kt_bq25601_current_limit_otg_enum limit);
     bool enableQ1FullOn(bool enable);
     bool setChargeCurrent(uint16_t current_mA);
+    bool setPrechargeCurrent(uint16_t current_mA);
+    bool setTerminationCurrent(uint16_t current_mA);
+    bool setChargeVoltage(uint16_t voltage_mV);
+    bool setTopOffTimer(kt_bq25601_topoff_timer_enum time);
+    bool setRechargeThreshold(kt_bq25601_recharge_threshold_enum threshold);
 
     void setDebugPort(Stream &debugPort) { _debugPort = &debugPort; }
     void disableDebug() { _debugPort = nullptr; }

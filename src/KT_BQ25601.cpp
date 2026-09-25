@@ -64,6 +64,8 @@ bool KT_BQ25601::updateReg(uint8_t value, uint8_t reg, uint8_t mask, int offset)
   return true;
 }
 
+// REG00
+
 bool KT_BQ25601::enableHIZ(bool enable){
   return updateReg(enable, KT_BQ25601_REG00, KT_BQ25601_ENABLE_HIZ_MASK, 7);
 }
@@ -82,16 +84,14 @@ bool KT_BQ25601::setInputCurrentLimit(uint16_t current_mA){
   return updateReg(current_mA, KT_BQ25601_REG00, KT_BQ25601_SET_INPUT_CURRENT_LIMIT_MASK, 0);
 }
 
+// REG01
+
 bool KT_BQ25601::enableCharging(bool enable){
   return updateReg(enable, KT_BQ25601_REG01, KT_BQ25601_ENABLE_CHARGING_MASK, 4);
 }
 
 bool KT_BQ25601::enableOTG(bool enable){
   return updateReg(enable, KT_BQ25601_REG01, KT_BQ25601_ENABLE_OTG_MASK, 5);
-}
-
-bool KT_BQ25601::setWatchdog(kt_bq25601_watchdog_enum watchdog){
-  return updateReg(watchdog, KT_BQ25601_REG05, KT_BQ25601_SET_WATCHDOG_MASK, 4);
 }
 
 bool KT_BQ25601::resetWatchdog(){
@@ -110,6 +110,8 @@ bool KT_BQ25601::enablePFM(bool enable){
   return updateReg(!enable, KT_BQ25601_REG01, KT_BQ25601_ENABLE_PFM_MASK, 7);
 }
 
+// REG02
+
 bool KT_BQ25601::setCurrentLImitOTG(kt_bq25601_current_limit_otg_enum limit){
   return updateReg(limit, KT_BQ25601_REG02, KT_BQ25601_SET_CURRENT_LIMIT_OTG_MASK, 7);
 }
@@ -125,5 +127,48 @@ bool KT_BQ25601::setChargeCurrent(uint16_t current_mA){
   current_mA /= 60;
 
   return updateReg(current_mA, KT_BQ25601_REG02, KT_BQ25601_CHARGE_CURRENT_MASK, 0);
+}
+
+// REG03
+
+bool KT_BQ25601::setPrechargeCurrent(uint16_t current_mA){
+  if(current_mA < 60) current_mA = 60;
+  else if(current_mA > 960) current_mA = 960;
+
+  current_mA = (current_mA - 60) / 60;
+
+  return updateReg(current_mA, KT_BQ25601_REG03, KT_BQ25601_PRECHARGE_CURRENT_MASK, 4);
+}
+
+bool KT_BQ25601::setTerminationCurrent(uint16_t current_mA){
+  if(current_mA < 60) current_mA = 60;
+  else if(current_mA > 960) current_mA = 960;
+
+  current_mA = (current_mA - 60) / 60;
+
+  return updateReg(current_mA, KT_BQ25601_REG03, KT_BQ25601_TERMINATION_CURRENT_MASK, 0);
+}
+
+// REG04
+
+bool KT_BQ25601::setChargeVoltage(uint16_t voltage_mV){
+  if(voltage_mV < 3856) voltage_mV = 3856;
+  else if(voltage_mV > 4624) voltage_mV = 4624;
+
+  voltage_mV = (voltage_mV - 3856) / 32;
+
+  return updateReg(voltage_mV, KT_BQ25601_REG04, KT_BQ25601_CHARGE_VOLTAGE_MASK, 3);
+}
+
+bool KT_BQ25601::setTopOffTimer(kt_bq25601_topoff_timer_enum time){
+  return updateReg(time, KT_BQ25601_REG04, KT_BQ25601_TOPOFF_TIMER_MASK, 1);
+}
+
+bool KT_BQ25601::setRechargeThreshold(kt_bq25601_recharge_threshold_enum threshold){
+  return updateReg(threshold, KT_BQ25601_REG04, KT_BQ25601_RECHARGE_THRESHOLD_MASK, 0);
+}
+
+bool KT_BQ25601::setWatchdog(kt_bq25601_watchdog_enum watchdog){
+  return updateReg(watchdog, KT_BQ25601_REG05, KT_BQ25601_SET_WATCHDOG_MASK, 4);
 }
 
