@@ -13,6 +13,7 @@
 #define KT_BQ25601_REG05 0x05
 #define KT_BQ25601_REG06 0x06
 #define KT_BQ25601_REG07 0x07
+#define KT_BQ25601_REG08 0x08
 
 #define KT_BQ25601_ENABLE_CHARGING_MASK 0x10
 #define KT_BQ25601_ENABLE_OTG_MASK 0x20
@@ -47,6 +48,11 @@
 #define KT_BQ25601_BATTFET_DELAY_MASK 0x08
 #define KT_BQ25601_BATTFET_RESET_FUNCTION_MASK 0x04
 #define KT_BQ25601_BAT_TRACK_MASK 0x03
+#define KT_BQ25601_CHARGE_STATUS_MASK 0x18
+#define KT_BQ25601_VBUS_STATUS_MASK 0xE0
+#define KT_BQ25601_POWER_GOOD_STATUS_MASK 0x04
+#define KT_BQ25601_THERMAL_REGULATION_STATUS_MASK 0x02
+#define KT_BQ25601_SYS_REGULATION_STATUS_MASK 0x01
 
 enum kt_bq25601_watchdog_enum {
     KT_BQ25601_WATCHDOG_NONE = 0,
@@ -134,6 +140,36 @@ enum kt_bq25601_bat_track_enum {
     KT_BQ25601_BAT_TRACK_0V3 = 3
 };
 
+enum kt_bq25601_power_status_enum {
+    KT_BQ25601_POWER_STATUS_NO_INPUT = 0,
+    KT_BQ25601_POWER_STATUS_USB_HOST = 1,
+    KT_BQ25601_POWER_STATUS_ADAPTER = 3,
+    KT_BQ25601_POWER_STATUS_OTG = 7
+};
+
+
+enum kt_bq25601_charge_status_enum {
+    KT_BQ25601_CHARGE_STATUS_NOT_CHARGING = 0,
+    KT_BQ25601_CHARGE_STATUS_PRE_CHARGE = 1,
+    KT_BQ25601_CHARGE_STATUS_FAST_CHARGING = 2,
+    KT_BQ25601_CHARGE_STATUS_CHARGE_TERMINATION = 3
+};
+
+enum kt_bq25601_power_good_status_enum {
+    KT_BQ25601_POWER_STATUS_NOT_GOOD = 0,
+    KT_BQ25601_POWER_STATUS_GOOD = 1
+};
+
+enum kt_bq25601_thermal_regulation_status_enum {
+    KT_BQ25601_THERMAL_REGULATION_OFF = 0,
+    KT_BQ25601_THERMAL_REGULATION_ON = 1
+};
+
+enum kt_bq25601_sys_regulation_status_enum {
+    KT_BQ25601_SYS_REGULATION_OFF = 0,
+    KT_BQ25601_SYS_REGULATION_ON = 1
+};
+
 class KT_BQ25601
 {
     public:
@@ -175,6 +211,12 @@ class KT_BQ25601
     bool enableBatfetResetFunction(bool enable);
     bool setBatTracking(kt_bq25601_bat_track_enum track);
 
+    kt_bq25601_power_status_enum getPowerStatus();
+    kt_bq25601_charge_status_enum getChargeStatus();
+    kt_bq25601_power_good_status_enum getPowerGoodStatus();
+    kt_bq25601_thermal_regulation_status_enum getThermalRegulationStatus();
+    kt_bq25601_sys_regulation_status_enum getSysRegulationStatus();
+
     void setDebugPort(Stream &debugPort) { _debugPort = &debugPort; }
     void disableDebug() { _debugPort = nullptr; }
 
@@ -183,6 +225,7 @@ class KT_BQ25601
     uint8_t _readRegister(uint8_t reg);
     void _writeRegister(uint8_t reg, uint8_t value);
     bool updateReg(uint8_t value, uint8_t reg, uint8_t mask, int offset);
+    uint8_t _readReg(uint8_t reg, uint8_t mask, int offset);
 
     TwoWire* _wire;
     Stream *_debugPort; 

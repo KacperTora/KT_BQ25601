@@ -64,6 +64,12 @@ bool KT_BQ25601::updateReg(uint8_t value, uint8_t reg, uint8_t mask, int offset)
   return true;
 }
 
+uint8_t KT_BQ25601::_readReg(uint8_t reg, uint8_t mask, int offset){
+  uint8_t regVal = _readRegister(reg);
+  regVal &= mask;
+  return regVal >> offset;
+}
+
 // REG00
 
 bool KT_BQ25601::enableHIZ(bool enable){
@@ -242,3 +248,24 @@ bool KT_BQ25601::setBatTracking(kt_bq25601_bat_track_enum track){
   return updateReg(track, KT_BQ25601_REG07, KT_BQ25601_BAT_TRACK_MASK, 0);
 }
 
+// REG08
+
+kt_bq25601_power_status_enum KT_BQ25601::getPowerStatus(){
+  return (kt_bq25601_power_status_enum)_readReg(KT_BQ25601_REG08, KT_BQ25601_VBUS_STATUS_MASK, 5);
+}
+
+kt_bq25601_charge_status_enum KT_BQ25601::getChargeStatus(){
+  return (kt_bq25601_charge_status_enum)_readReg(KT_BQ25601_REG08, KT_BQ25601_CHARGE_STATUS_MASK, 3);
+}
+
+kt_bq25601_power_good_status_enum KT_BQ25601::getPowerGoodStatus(){
+  return (kt_bq25601_power_good_status_enum)_readReg(KT_BQ25601_REG08, KT_BQ25601_POWER_GOOD_STATUS_MASK, 2);
+}
+
+kt_bq25601_thermal_regulation_status_enum KT_BQ25601::getThermalRegulationStatus(){
+  return (kt_bq25601_thermal_regulation_status_enum)_readReg(KT_BQ25601_REG08, KT_BQ25601_THERMAL_REGULATION_STATUS_MASK, 1);
+}
+
+kt_bq25601_sys_regulation_status_enum KT_BQ25601::getSysRegulationStatus(){
+  return (kt_bq25601_sys_regulation_status_enum)_readReg(KT_BQ25601_REG08, KT_BQ25601_SYS_REGULATION_STATUS_MASK, 10;
+}
