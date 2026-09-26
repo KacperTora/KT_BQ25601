@@ -15,6 +15,8 @@
 #define KT_BQ25601_REG07 0x07
 #define KT_BQ25601_REG08 0x08
 #define KT_BQ25601_REG09 0x09
+#define KT_BQ25601_REG0A 0x0A
+#define KT_BQ25601_REG0B 0x0B
 
 #define KT_BQ25601_ENABLE_CHARGING_MASK 0x10
 #define KT_BQ25601_ENABLE_OTG_MASK 0x20
@@ -59,6 +61,16 @@
 #define KT_BQ25601_CHARGE_FAULT_MASK 0x30
 #define KT_BQ25601_BAT_FAULT_MASK 0x08
 #define KT_BQ25601_NTC_FAULT_MASK 0x07
+#define KT_BQ25601_POWER_PRESENT_MASK 0x80
+#define KT_BQ25601_INPUT_VOLTAGE_LIMIT_STATUS_MASK 0x40
+#define KT_BQ25601_INPUT_CURRENT_LIMIT_STATUS_MASK 0x20
+#define KT_BQ25601_TOPOFF_TIMER_ACTIVE_MASK 0x08
+#define KT_BQ25601_OVERVOLTAGE_STATUS_MASK 0x04
+#define KT_BQ25601_VINDPM_INT_MASK 0x02
+#define KT_BQ25601_IINDPM_INT_MASK 0x01
+#define KT_BQ25601_RESET_MASK 0x80
+#define KT_BQ25601_PART_NUMBER_MASK 0x78
+#define KT_BQ25601_DEV_REV_MASK 0x03
 
 enum kt_bq25601_watchdog_enum {
     KT_BQ25601_WATCHDOG_NONE = 0,
@@ -231,6 +243,9 @@ class KT_BQ25601
     bool setBatfetDelay(kt_bq25601_batfet_delay_enum delay);
     bool enableBatfetResetFunction(bool enable);
     bool setBatTracking(kt_bq25601_bat_track_enum track);
+    bool enableVoltageRegulationInterrupt(bool enable);
+    bool enableCurrentRegulationInterrupt(bool enable);
+    bool reset();
 
     kt_bq25601_power_status_enum getPowerStatus();
     kt_bq25601_charge_status_enum getChargeStatus();
@@ -242,6 +257,13 @@ class KT_BQ25601
     kt_bq25601_charge_fault_enum getChargeFault();
     bool isBatFault();
     kt_bq25601_ntc_fault_enum getNTCFault();
+    bool isPowerPresent();
+    bool isInputVoltageLimit();
+    bool isInputCurrentLimit();
+    bool isTopOffTimerActive();
+    bool isOvervoltage();
+    uint8_t getPartNumber();
+    uint8_t getDeviceRevision();
 
     void setDebugPort(Stream &debugPort) { _debugPort = &debugPort; }
     void disableDebug() { _debugPort = nullptr; }

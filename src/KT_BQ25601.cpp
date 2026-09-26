@@ -291,3 +291,47 @@ bool KT_BQ25601::isBatFault(){
 kt_bq25601_ntc_fault_enum KT_BQ25601::getNTCFault(){
   return (kt_bq25601_ntc_fault_enum)_readReg(KT_BQ25601_REG09, KT_BQ25601_NTC_FAULT_MASK, 0);
 }
+
+// REG0A
+
+bool KT_BQ25601::isPowerPresent(){
+  return _readReg(KT_BQ25601_REG0A, KT_BQ25601_POWER_PRESENT_MASK, 7);
+}
+
+bool KT_BQ25601::isInputVoltageLimit(){
+  return _readReg(KT_BQ25601_REG0A, KT_BQ25601_INPUT_VOLTAGE_LIMIT_STATUS_MASK, 6);
+}
+
+bool KT_BQ25601::isInputCurrentLimit(){
+  return _readReg(KT_BQ25601_REG0A, KT_BQ25601_INPUT_CURRENT_LIMIT_STATUS_MASK, 5);
+}
+
+bool KT_BQ25601::isTopOffTimerActive(){
+  return _readReg(KT_BQ25601_REG0A, KT_BQ25601_TOPOFF_TIMER_ACTIVE_MASK, 3);
+}
+
+bool KT_BQ25601::isOvervoltage(){
+  return _readReg(KT_BQ25601_REG0A, KT_BQ25601_OVERVOLTAGE_STATUS_MASK, 2);
+}
+
+bool KT_BQ25601::enableVoltageRegulationInterrupt(bool enable){
+  return updateReg(!enable, KT_BQ25601_REG0A, KT_BQ25601_VINDPM_INT_MASK, 1);
+}
+
+bool KT_BQ25601::enableCurrentRegulationInterrupt(bool enable){
+  return updateReg(!enable, KT_BQ25601_REG0A, KT_BQ25601_IINDPM_INT_MASK, 0);
+}
+
+// REG0B
+
+bool KT_BQ25601::reset(){
+  return updateReg(1, KT_BQ25601_REG0B, KT_BQ25601_RESET_MASK, 7);
+}
+
+uint8_t KT_BQ25601::getPartNumber(){
+  return _readReg(KT_BQ25601_REG0B, KT_BQ25601_PART_NUMBER_MASK, 3);
+}
+
+uint8_t KT_BQ25601::getDeviceRevision(){
+  return _readReg(KT_BQ25601_REG0B, KT_BQ25601_DEV_REV_MASK, 0);
+}
