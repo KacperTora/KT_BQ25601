@@ -12,6 +12,7 @@
 #define KT_BQ25601_REG04 0x04
 #define KT_BQ25601_REG05 0x05
 #define KT_BQ25601_REG06 0x06
+#define KT_BQ25601_REG07 0x07
 
 #define KT_BQ25601_ENABLE_CHARGING_MASK 0x10
 #define KT_BQ25601_ENABLE_OTG_MASK 0x20
@@ -39,6 +40,13 @@
 #define KT_BQ25601_OVP_MASK 0xC0
 #define KT_BQ25601_REGULATION_VOLTAGE_OTG_MASK 0x30
 #define KT_BQ25601_INPUT_VOLTAGE_THRESHOLD_MASK 0x0F
+#define KT_BQ25601_INPUT_CURRENT_DETECTION_LIMIT_MASK 0x80
+#define KT_BQ25601_SLOW_SAFETY_TIMER_MASK 0x40
+#define KT_BQ25601_SHIPPING_MODE_MASK 0x20
+#define KT_BQ25601_WARM_TEMPERATURE_VOLTAGE_SETTING_MASK 0x10
+#define KT_BQ25601_BATTFET_DELAY_MASK 0x08
+#define KT_BQ25601_BATTFET_RESET_FUNCTION_MASK 0x04
+#define KT_BQ25601_BAT_TRACK_MASK 0x03
 
 enum kt_bq25601_watchdog_enum {
     KT_BQ25601_WATCHDOG_NONE = 0,
@@ -90,7 +98,7 @@ enum kt_bq25601_thermal_regulation_threshold_enum {
     KT_BQ25601_THERMAL_REGULATION_THRESHOLD_110_DEGREES = 1
 };
 
-enum kt_bq25601_cool_temperature_current_limit_otg_enum {
+enum kt_bq25601_cool_temperature_current_limit_enum {
     KT_BQ25601_COOL_TEMPERATURE_CURRENT_LIMIT_50_PERCENT = 0,
     KT_BQ25601_COOL_TEMPERATURE_CURRENT_LIMIT_20_PERCENT = 1
 };
@@ -107,6 +115,23 @@ enum kt_bq25601_regulation_voltage_otg_enum {
     KT_BQ25601_REGULATION_VOLTAGE_OTG_5V = 1,
     KT_BQ25601_REGULATION_VOLTAGE_OTG_5V15 = 2,
     KT_BQ25601_REGULATION_VOLTAGE_OTG_5V3 = 1
+};
+
+enum kt_bq25601_warm_temperature_voltage_setting_enum {
+    KT_BQ25601_WARM_TEMPERATURE_VOLTAGE_SETTING_4V1 = 0,
+    KT_BQ25601_WARM_TEMPERATURE_VOLTAGE_SETTING_CHARGE_VOLTAGE = 1
+};
+
+enum kt_bq25601_batfet_delay_enum {
+    KT_BQ25601_BATFET_DELAY_NONE = 0,
+    KT_BQ25601_BATFET_DELAY_10S = 1
+};
+
+enum kt_bq25601_bat_track_enum {
+    KT_BQ25601_BAT_TRACK_DISABLE = 0,
+    KT_BQ25601_BAT_TRACK_0V2 = 1,
+    KT_BQ25601_BAT_TRACK_0V25 = 2,
+    KT_BQ25601_BAT_TRACK_0V3 = 3
 };
 
 class KT_BQ25601
@@ -138,10 +163,17 @@ class KT_BQ25601
     bool enableSafetyTimer(bool enable);
     bool enableChargeSafetyTimer(bool enable);
     bool setThermalRegulationThreshold(kt_bq25601_thermal_regulation_threshold_enum threshold);
-    bool setCoolTemperatureCurrentLimit(kt_bq25601_cool_temperature_current_limit_otg_enum limit);
+    bool setCoolTemperatureCurrentLimit(kt_bq25601_cool_temperature_current_limit_enum limit);
     bool setOVP(kt_bq25601_ovp_enum voltage);
     bool setRegulationVoltageOTG(kt_bq25601_regulation_voltage_otg_enum voltage);
     bool setInputVoltageThreshold(uint16_t voltage_mV);
+    bool enableInputCurrentDetectionLimit(bool enable);
+    bool slowSafetyTimer(bool enable);
+    bool enableShippingMode(bool enable);
+    bool setWarmTemperatureVoltageSetting(kt_bq25601_warm_temperature_voltage_setting_enum voltage);
+    bool setBatfetDelay(kt_bq25601_batfet_delay_enum delay);
+    bool enableBatfetResetFunction(bool enable);
+    bool setBatTracking(kt_bq25601_bat_track_enum track);
 
     void setDebugPort(Stream &debugPort) { _debugPort = &debugPort; }
     void disableDebug() { _debugPort = nullptr; }

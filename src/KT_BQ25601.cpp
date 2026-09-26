@@ -189,7 +189,7 @@ bool KT_BQ25601::setThermalRegulationThreshold(kt_bq25601_thermal_regulation_thr
   return updateReg(threshold, KT_BQ25601_REG05, KT_BQ25601_THERMAL_REGULATION_THRESHOLD_MASK, 1);
 }
 
-bool KT_BQ25601::setCoolTemperatureCurrentLimit(kt_bq25601_cool_temperature_current_limit_otg_enum limit){
+bool KT_BQ25601::setCoolTemperatureCurrentLimit(kt_bq25601_cool_temperature_current_limit_enum limit){
   return updateReg(limit, KT_BQ25601_REG05, KT_BQ25601_COOL_TEMPERATURE_CURRENT_LIMIT_MASK, 0);
 }
 
@@ -210,5 +210,35 @@ bool KT_BQ25601::setInputVoltageThreshold(uint16_t voltage_mV){
   voltage_mV = (voltage_mV - 3900) / 100;
 
   return updateReg(voltage_mV, KT_BQ25601_REG06, KT_BQ25601_INPUT_VOLTAGE_THRESHOLD_MASK, 0);
+}
+
+// REG07
+
+bool KT_BQ25601::enableInputCurrentDetectionLimit(bool enable){
+  return updateReg(enable, KT_BQ25601_REG07, KT_BQ25601_INPUT_CURRENT_DETECTION_LIMIT_MASK, 7);
+}
+
+bool KT_BQ25601::slowSafetyTimer(bool enable){
+  return updateReg(enable, KT_BQ25601_REG07, KT_BQ25601_SLOW_SAFETY_TIMER_MASK, 6);
+}
+
+bool KT_BQ25601::enableShippingMode(bool enable){
+  return updateReg(enable, KT_BQ25601_REG07, KT_BQ25601_SHIPPING_MODE_MASK, 5);
+}
+
+bool KT_BQ25601::setWarmTemperatureVoltageSetting(kt_bq25601_warm_temperature_voltage_setting_enum voltage){
+  return updateReg(voltage, KT_BQ25601_REG07, KT_BQ25601_WARM_TEMPERATURE_VOLTAGE_SETTING_MASK, 4);
+}
+
+bool KT_BQ25601::setBatfetDelay(kt_bq25601_batfet_delay_enum delay){
+  return updateReg(delay, KT_BQ25601_REG07, KT_BQ25601_BATTFET_DELAY_MASK, 3);
+}
+
+bool KT_BQ25601::enableBatfetResetFunction(bool enable){
+  return updateReg(enable, KT_BQ25601_REG07, KT_BQ25601_BATTFET_RESET_FUNCTION_MASK, 2);
+}
+
+bool KT_BQ25601::setBatTracking(kt_bq25601_bat_track_enum track){
+  return updateReg(track, KT_BQ25601_REG07, KT_BQ25601_BAT_TRACK_MASK, 0);
 }
 
