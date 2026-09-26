@@ -14,6 +14,7 @@
 #define KT_BQ25601_REG06 0x06
 #define KT_BQ25601_REG07 0x07
 #define KT_BQ25601_REG08 0x08
+#define KT_BQ25601_REG09 0x09
 
 #define KT_BQ25601_ENABLE_CHARGING_MASK 0x10
 #define KT_BQ25601_ENABLE_OTG_MASK 0x20
@@ -53,6 +54,11 @@
 #define KT_BQ25601_POWER_GOOD_STATUS_MASK 0x04
 #define KT_BQ25601_THERMAL_REGULATION_STATUS_MASK 0x02
 #define KT_BQ25601_SYS_REGULATION_STATUS_MASK 0x01
+#define KT_BQ25601_WATCHDOG_FAULT_MASK 0x80
+#define KT_BQ25601_OTG_FAULT_MASK 0x40
+#define KT_BQ25601_CHARGE_FAULT_MASK 0x30
+#define KT_BQ25601_BAT_FAULT_MASK 0x08
+#define KT_BQ25601_NTC_FAULT_MASK 0x07
 
 enum kt_bq25601_watchdog_enum {
     KT_BQ25601_WATCHDOG_NONE = 0,
@@ -170,6 +176,21 @@ enum kt_bq25601_sys_regulation_status_enum {
     KT_BQ25601_SYS_REGULATION_ON = 1
 };
 
+enum kt_bq25601_charge_fault_enum {
+    KT_BQ25601_CHARGE_FAULT_NORMAL = 0,
+    KT_BQ25601_CHARGE_FAULT_INPUT_FAULT = 1,
+    KT_BQ25601_CHARGE_FAULT_THERMAL_SHUTDOWM = 2,
+    KT_BQ25601_CHARGE_FAULT_CHARGE_SAFETY_TIMER_EXPIRATION = 3
+};
+
+enum kt_bq25601_ntc_fault_enum {
+    KT_BQ25601_NTC_FAULT_NORMAL = 0,
+    KT_BQ25601_NTC_FAULT_WARM = 1,
+    KT_BQ25601_NTC_FAULT_COOL = 2,
+    KT_BQ25601_NTC_FAULT_COLD = 5,
+    KT_BQ25601_NTC_FAULT_HOT = 6
+};
+
 class KT_BQ25601
 {
     public:
@@ -216,6 +237,11 @@ class KT_BQ25601
     kt_bq25601_power_good_status_enum getPowerGoodStatus();
     kt_bq25601_thermal_regulation_status_enum getThermalRegulationStatus();
     kt_bq25601_sys_regulation_status_enum getSysRegulationStatus();
+    bool isWatchdogFault();
+    bool isOTGFault();
+    kt_bq25601_charge_fault_enum getChargeFault();
+    bool isBatFault();
+    kt_bq25601_ntc_fault_enum getNTCFault();
 
     void setDebugPort(Stream &debugPort) { _debugPort = &debugPort; }
     void disableDebug() { _debugPort = nullptr; }

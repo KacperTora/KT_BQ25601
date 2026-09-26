@@ -267,5 +267,27 @@ kt_bq25601_thermal_regulation_status_enum KT_BQ25601::getThermalRegulationStatus
 }
 
 kt_bq25601_sys_regulation_status_enum KT_BQ25601::getSysRegulationStatus(){
-  return (kt_bq25601_sys_regulation_status_enum)_readReg(KT_BQ25601_REG08, KT_BQ25601_SYS_REGULATION_STATUS_MASK, 10;
+  return (kt_bq25601_sys_regulation_status_enum)_readReg(KT_BQ25601_REG08, KT_BQ25601_SYS_REGULATION_STATUS_MASK, 10);
+}
+
+// REG09
+
+bool KT_BQ25601::isWatchdogFault(){
+  return _readReg(KT_BQ25601_REG09, KT_BQ25601_WATCHDOG_FAULT_MASK, 7);
+}
+
+bool KT_BQ25601::isOTGFault(){
+  return _readReg(KT_BQ25601_REG09, KT_BQ25601_OTG_FAULT_MASK, 6);
+}
+
+kt_bq25601_charge_fault_enum KT_BQ25601::getChargeFault(){
+  return (kt_bq25601_charge_fault_enum)_readReg(KT_BQ25601_REG09, KT_BQ25601_CHARGE_FAULT_MASK, 4);
+}
+
+bool KT_BQ25601::isBatFault(){
+  return _readReg(KT_BQ25601_REG09, KT_BQ25601_BAT_FAULT_MASK, 3);
+}
+
+kt_bq25601_ntc_fault_enum KT_BQ25601::getNTCFault(){
+  return (kt_bq25601_ntc_fault_enum)_readReg(KT_BQ25601_REG09, KT_BQ25601_NTC_FAULT_MASK, 0);
 }
