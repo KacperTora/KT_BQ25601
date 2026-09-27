@@ -38,7 +38,7 @@
 #define KT_BQ25601_RECHARGE_THRESHOLD_MASK 0x01
 #define KT_BQ25601_ENABLE_TERMINATION_MASK 0x80
 #define KT_BQ25601_ENABLE_SAFETY_TIMER_MASK 0x08
-#define KT_BQ25601_ENABLE_CHARGE_SAFETY_TIMER_MASK 0x04
+#define KT_BQ25601_CHARGE_SAFETY_TIMER_MASK 0x04
 #define KT_BQ25601_THERMAL_REGULATION_THRESHOLD_MASK 0x02
 #define KT_BQ25601_COOL_TEMPERATURE_CURRENT_LIMIT_MASK 0x01
 #define KT_BQ25601_OVP_MASK 0xC0
@@ -73,7 +73,7 @@
 #define KT_BQ25601_DEV_REV_MASK 0x03
 
 enum kt_bq25601_watchdog_enum {
-    KT_BQ25601_WATCHDOG_NONE = 0,
+    KT_BQ25601_WATCHDOG_DISABLE = 0,
     KT_BQ25601_WATCHDOG_40S = 1,
     KT_BQ25601_WATCHDOG_80S = 2,
     KT_BQ25601_WATCHDOG_160S = 3
@@ -138,7 +138,7 @@ enum kt_bq25601_regulation_voltage_otg_enum {
     KT_BQ25601_REGULATION_VOLTAGE_OTG_4V85 = 0,
     KT_BQ25601_REGULATION_VOLTAGE_OTG_5V = 1,
     KT_BQ25601_REGULATION_VOLTAGE_OTG_5V15 = 2,
-    KT_BQ25601_REGULATION_VOLTAGE_OTG_5V3 = 1
+    KT_BQ25601_REGULATION_VOLTAGE_OTG_5V3 = 3
 };
 
 enum kt_bq25601_warm_temperature_voltage_setting_enum {
@@ -203,6 +203,11 @@ enum kt_bq25601_ntc_fault_enum {
     KT_BQ25601_NTC_FAULT_HOT = 6
 };
 
+enum kt_bq25601_charge_safety_timer_enum {
+    KT_BQ25601_CHARGE_SAFETY_TIMER_5H = 0,
+    KT_BQ25601_CHARGE_SAFETY_TIMER_10H = 1
+};
+
 class KT_BQ25601
 {
     public:
@@ -230,10 +235,10 @@ class KT_BQ25601
     bool setRechargeThreshold(kt_bq25601_recharge_threshold_enum threshold);
     bool enableTermination(bool enable);
     bool enableSafetyTimer(bool enable);
-    bool enableChargeSafetyTimer(bool enable);
+    bool setChargeSafetyTimer(kt_bq25601_charge_safety_timer_enum hours);
     bool setThermalRegulationThreshold(kt_bq25601_thermal_regulation_threshold_enum threshold);
     bool setCoolTemperatureCurrentLimit(kt_bq25601_cool_temperature_current_limit_enum limit);
-    bool setOVP(kt_bq25601_ovp_enum voltage);
+    bool setOVPThreshold(kt_bq25601_ovp_enum voltage);
     bool setRegulationVoltageOTG(kt_bq25601_regulation_voltage_otg_enum voltage);
     bool setInputVoltageThreshold(uint16_t voltage_mV);
     bool enableInputCurrentDetectionLimit(bool enable);
@@ -264,6 +269,12 @@ class KT_BQ25601
     bool isOvervoltage();
     uint8_t getPartNumber();
     uint8_t getDeviceRevision();
+    uint16_t getInputCurrentLimit();
+    uint16_t getChargeCurrent();
+    uint16_t getPrechargeCurrent();
+    uint16_t getChargeVoltage();
+    bool isChargingEnabled();
+    bool isOTGEnabled();
 
     void setDebugPort(Stream &debugPort) { _debugPort = &debugPort; }
     void disableDebug() { _debugPort = nullptr; }
