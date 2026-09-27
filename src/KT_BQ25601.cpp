@@ -281,6 +281,17 @@ bool KT_BQ25601::setTerminationCurrent(uint16_t current_mA){
   return updateReg(current_mA, KT_BQ25601_REG03, KT_BQ25601_TERMINATION_CURRENT_MASK, 0);
 }
 
+/*!
+ *    @brief Get Termination Current
+ *    @return Current in milliamperes
+ */
+uint16_t KT_BQ25601::getTerminationCurrent(){
+  int16_t current_mA = _readReg(KT_BQ25601_REG03, KT_BQ25601_TERMINATION_CURRENT_MASK, 0);
+
+  current_mA = (current_mA * 60) + 60;
+  return current_mA;
+}
+
 // REG04
 
 /*!
