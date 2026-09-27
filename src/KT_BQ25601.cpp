@@ -250,10 +250,10 @@ uint16_t KT_BQ25601::getChargeCurrent(){
  *    @return True if success
  */
 bool KT_BQ25601::setPrechargeCurrent(uint16_t current_mA){
-  if(current_mA > 960) current_mA = 960;
+  if (current_mA < 60) current_mA = 60;
+  else if (current_mA > 780) current_mA = 780;
 
-  current_mA /= 60;
-
+  current_mA = (current_mA - 60) / 60;
   return updateReg(current_mA, KT_BQ25601_REG03, KT_BQ25601_PRECHARGE_CURRENT_MASK, 4);
 }
 
@@ -264,7 +264,7 @@ bool KT_BQ25601::setPrechargeCurrent(uint16_t current_mA){
 uint16_t KT_BQ25601::getPrechargeCurrent(){
   int16_t current_mA = _readReg(KT_BQ25601_REG03, KT_BQ25601_PRECHARGE_CURRENT_MASK, 4);
 
-  current_mA = (current_mA * 60);
+  current_mA = (current_mA * 60) + 60;
   return current_mA;
 }
 
@@ -274,10 +274,10 @@ uint16_t KT_BQ25601::getPrechargeCurrent(){
  *    @return True if success
  */
 bool KT_BQ25601::setTerminationCurrent(uint16_t current_mA){
-  if(current_mA > 960) current_mA = 960;
+  if (current_mA < 60) current_mA = 60;
+  else if (current_mA > 780) current_mA = 780;
 
-  current_mA /= 60;
-
+  current_mA = (current_mA - 60) / 60;
   return updateReg(current_mA, KT_BQ25601_REG03, KT_BQ25601_TERMINATION_CURRENT_MASK, 0);
 }
 
@@ -304,7 +304,7 @@ bool KT_BQ25601::setChargeVoltage(uint16_t voltage_mV){
 uint16_t KT_BQ25601::getChargeVoltage(){
   int16_t voltage_mV = _readReg(KT_BQ25601_REG04, KT_BQ25601_CHARGE_VOLTAGE_MASK, 3);
 
-  voltage_mV = (voltage_mV + 3856) * 32;
+  voltage_mV = (voltage_mV * 3856) + 32;
   return voltage_mV;
 }
 
@@ -366,7 +366,7 @@ bool KT_BQ25601::setChargeSafetyTimer(kt_bq25601_charge_safety_timer_enum hours)
 
 /*!
  *    @brief Set Thermal Regulation Threshold (90 degrees or 110 degrees)
- *    @param hours Enum value to set threshold (KT_BQ25601_THERMAL_REGULATION_THRESHOLD_90_DEGREES or KT_BQ25601_THERMAL_REGULATION_THRESHOLD_110_DEGREES)
+ *    @param threshold Enum value to set threshold (KT_BQ25601_THERMAL_REGULATION_THRESHOLD_90_DEGREES or KT_BQ25601_THERMAL_REGULATION_THRESHOLD_110_DEGREES)
  *    @return True if success
  */
 bool KT_BQ25601::setThermalRegulationThreshold(kt_bq25601_thermal_regulation_threshold_enum threshold){
@@ -375,7 +375,7 @@ bool KT_BQ25601::setThermalRegulationThreshold(kt_bq25601_thermal_regulation_thr
 
 /*!
  *    @brief Set Cool Temperature Current Limit (50% or 20% of Charge Current)
- *    @param hours Enum value to set limit (KT_BQ25601_COOL_TEMPERATURE_CURRENT_LIMIT_50_PERCENT or KT_BQ25601_COOL_TEMPERATURE_CURRENT_LIMIT_20_PERCENT)
+ *    @param limit Enum value to set limit (KT_BQ25601_COOL_TEMPERATURE_CURRENT_LIMIT_50_PERCENT or KT_BQ25601_COOL_TEMPERATURE_CURRENT_LIMIT_20_PERCENT)
  *    @return True if success
  */
 bool KT_BQ25601::setCoolTemperatureCurrentLimit(kt_bq25601_cool_temperature_current_limit_enum limit){
@@ -386,7 +386,7 @@ bool KT_BQ25601::setCoolTemperatureCurrentLimit(kt_bq25601_cool_temperature_curr
 
 /*!
  *    @brief Set OVP Threshold (5.5 V, 6.5 V, 10.5 V or 14V)
- *    @param hours Enum value to set threshold (KT_BQ25601_OVP_5V5 or KT_BQ25601_OVP_6V5 ect.)
+ *    @param voltage Enum value to set threshold (KT_BQ25601_OVP_5V5 or KT_BQ25601_OVP_6V5 ect.)
  *    @return True if success
  */
 bool KT_BQ25601::setOVPThreshold(kt_bq25601_ovp_enum voltage){
@@ -395,7 +395,7 @@ bool KT_BQ25601::setOVPThreshold(kt_bq25601_ovp_enum voltage){
 
 /*!
  *    @brief Set OTG Regulation Voltage (4.85 V, 5 V, 5.15 V or 5.3 V)
- *    @param hours Enum value to set voltage (KT_BQ25601_REGULATION_VOLTAGE_OTG_4V85 or KT_BQ25601_REGULATION_VOLTAGE_OTG_5V ect.)
+ *    @param voltage Enum value to set voltage (KT_BQ25601_REGULATION_VOLTAGE_OTG_4V85 or KT_BQ25601_REGULATION_VOLTAGE_OTG_5V ect.)
  *    @return True if success
  */
 bool KT_BQ25601::setRegulationVoltageOTG(kt_bq25601_regulation_voltage_otg_enum voltage){
@@ -474,7 +474,7 @@ bool KT_BQ25601::enableBatfetResetFunction(bool enable){
 
 /*!
  *    @brief Set BAT Tracking (Disable, VBAT + 200 mV, +250 mV or +300 mV)
- *    @param delay Enum value to set track (KT_BQ25601_BAT_TRACK_DISABLE or KT_BQ25601_BAT_TRACK_0V2 ect.)
+ *    @param track Enum value to set track (KT_BQ25601_BAT_TRACK_DISABLE or KT_BQ25601_BAT_TRACK_0V2 ect.)
  *    @return True if success
  */
 bool KT_BQ25601::setBatTracking(kt_bq25601_bat_track_enum track){
