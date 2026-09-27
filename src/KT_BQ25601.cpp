@@ -1,3 +1,12 @@
+/*
+ * KT_BQ25601 Arduino Library
+ * Copyright (C) 2026 Kacper Tora
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ */
+
 #include "KT_BQ25601.h"
 
 KT_BQ25601::KT_BQ25601(TwoWire *wire){
