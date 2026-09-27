@@ -418,118 +418,235 @@ bool KT_BQ25601::setInputVoltageThreshold(uint16_t voltage_mV){
 
 // REG07
 
+/*!
+ *    @brief Enable input current limit detection when VBUS is present 
+ *    @param enable True to enable, False to disable
+ *    @return True if success
+ */
 bool KT_BQ25601::enableInputCurrentDetectionLimit(bool enable){
   return updateReg(enable, KT_BQ25601_REG07, KT_BQ25601_INPUT_CURRENT_DETECTION_LIMIT_MASK, 7);
 }
 
+/*!
+ *    @brief Slow Safety Timer by 2X
+ *    @param enable True to slow
+ *    @return True if success
+ */
 bool KT_BQ25601::slowSafetyTimer(bool enable){
   return updateReg(enable, KT_BQ25601_REG07, KT_BQ25601_SLOW_SAFETY_TIMER_MASK, 6);
 }
 
+/*!
+ *    @brief Enable Shipping Mode (BATFET disable)
+ *    @param enable True to enable shipping mode, False to disable
+ *    @return True if success
+ */
 bool KT_BQ25601::enableShippingMode(bool enable){
   return updateReg(enable, KT_BQ25601_REG07, KT_BQ25601_SHIPPING_MODE_MASK, 5);
 }
 
+/*!
+ *    @brief Set Warm Temperature Voltage SETTING (Charge voltage 4.1 V or charge voltage set to VREG)
+ *    @param voltage Enum value to set voltage (KT_BQ25601_WARM_TEMPERATURE_VOLTAGE_SETTING_4V1 or KT_BQ25601_WARM_TEMPERATURE_VOLTAGE_SETTING_CHARGE_VOLTAGE)
+ *    @return True if success
+ */
 bool KT_BQ25601::setWarmTemperatureVoltageSetting(kt_bq25601_warm_temperature_voltage_setting_enum voltage){
   return updateReg(voltage, KT_BQ25601_REG07, KT_BQ25601_WARM_TEMPERATURE_VOLTAGE_SETTING_MASK, 4);
 }
 
+/*!
+ *    @brief Set BATFET Delay (None or 10 seconds)
+ *    @param delay Enum value to set delay (KT_BQ25601_BATFET_DELAY_NONE or KT_BQ25601_BATFET_DELAY_10S)
+ *    @return True if success
+ */
 bool KT_BQ25601::setBatfetDelay(kt_bq25601_batfet_delay_enum delay){
   return updateReg(delay, KT_BQ25601_REG07, KT_BQ25601_BATTFET_DELAY_MASK, 3);
 }
 
+/*!
+ *    @brief Enable BATFET Reset Fucntion
+ *    @param enable True to enable, False to disable
+ *    @return True if success
+ */
 bool KT_BQ25601::enableBatfetResetFunction(bool enable){
   return updateReg(enable, KT_BQ25601_REG07, KT_BQ25601_BATTFET_RESET_FUNCTION_MASK, 2);
 }
 
+/*!
+ *    @brief Set BAT Tracking (Disable, VBAT + 200 mV, +250 mV or +300 mV)
+ *    @param delay Enum value to set track (KT_BQ25601_BAT_TRACK_DISABLE or KT_BQ25601_BAT_TRACK_0V2 ect.)
+ *    @return True if success
+ */
 bool KT_BQ25601::setBatTracking(kt_bq25601_bat_track_enum track){
   return updateReg(track, KT_BQ25601_REG07, KT_BQ25601_BAT_TRACK_MASK, 0);
 }
 
 // REG08
 
+/*!
+ *    @brief Get VBUS Status Register (No input, USB, Adapter or OTG)
+ *    @return Enum value (KT_BQ25601_POWER_STATUS_NO_INPUT, KT_BQ25601_POWER_STATUS_USB_HOST, KT_BQ25601_POWER_STATUS_ADAPTER or KT_BQ25601_POWER_STATUS_OTG)
+ */
 kt_bq25601_power_status_enum KT_BQ25601::getPowerStatus(){
   return (kt_bq25601_power_status_enum)_readReg(KT_BQ25601_REG08, KT_BQ25601_VBUS_STATUS_MASK, 5);
 }
 
+/*!
+ *    @brief Get Charging Status (Not Carging, Pre-charge, Fast Charging or Charge Termination)
+ *    @return Enum value (KT_BQ25601_CHARGE_STATUS_NOT_CHARGING, KT_BQ25601_CHARGE_STATUS_PRE_CHARGE, KT_BQ25601_CHARGE_STATUS_FAST_CHARGING or KT_BQ25601_CHARGE_STATUS_CHARGE_TERMINATION)
+ */
 kt_bq25601_charge_status_enum KT_BQ25601::getChargeStatus(){
   return (kt_bq25601_charge_status_enum)_readReg(KT_BQ25601_REG08, KT_BQ25601_CHARGE_STATUS_MASK, 3);
 }
 
-kt_bq25601_power_good_status_enum KT_BQ25601::getPowerGoodStatus(){
-  return (kt_bq25601_power_good_status_enum)_readReg(KT_BQ25601_REG08, KT_BQ25601_POWER_GOOD_STATUS_MASK, 2);
+/*!
+ *    @brief Get Power Good Status
+ *    @return True if good, False if not good
+ */
+bool KT_BQ25601::isPowerGood(){
+  return _readReg(KT_BQ25601_REG08, KT_BQ25601_POWER_GOOD_STATUS_MASK, 2);
 }
 
+/*!
+ *    @brief Get Thermal Regulation Status (In thermal regulation or not in thermal regilation)
+ *    @return Enum value (KT_BQ25601_THERMAL_REGULATION_OFF or KT_BQ25601_THERMAL_REGULATION_ON)
+ */
 kt_bq25601_thermal_regulation_status_enum KT_BQ25601::getThermalRegulationStatus(){
   return (kt_bq25601_thermal_regulation_status_enum)_readReg(KT_BQ25601_REG08, KT_BQ25601_THERMAL_REGULATION_STATUS_MASK, 1);
 }
 
+/*!
+ *    @brief Get SYS Regulation Status (In SYS regulation or not in SYS regilation)
+ *    @return Enum value (KT_BQ25601_SYS_REGULATION_OFF or KT_BQ25601_SYS_REGULATION_ON)
+ */
 kt_bq25601_sys_regulation_status_enum KT_BQ25601::getSysRegulationStatus(){
   return (kt_bq25601_sys_regulation_status_enum)_readReg(KT_BQ25601_REG08, KT_BQ25601_SYS_REGULATION_STATUS_MASK, 0);
 }
 
 // REG09
 
+/*!
+ *    @brief Watchdog Timer Expiration
+ *    @return True if yes
+ */
 bool KT_BQ25601::isWatchdogFault(){
   return _readReg(KT_BQ25601_REG09, KT_BQ25601_WATCHDOG_FAULT_MASK, 7);
 }
 
+/*!
+ *    @brief VBUS overloaded in OTG, or VBUS OVP, or battery is too low
+ *    @return True if yes
+ */
 bool KT_BQ25601::isOTGFault(){
   return _readReg(KT_BQ25601_REG09, KT_BQ25601_OTG_FAULT_MASK, 6);
 }
 
+/*!
+ *    @brief Get Charge Fault (No fault, input fault, thermal shutdown or charge safety timer expiration)
+ *    @return Enum value (KT_BQ25601_CHARGE_FAULT_NORMAL, KT_BQ25601_CHARGE_FAULT_INPUT_FAULT, KT_BQ25601_CHARGE_FAULT_THERMAL_SHUTDOWM or KT_BQ25601_CHARGE_FAULT_CHARGE_SAFETY_TIMER_EXPIRATION)
+ */
 kt_bq25601_charge_fault_enum KT_BQ25601::getChargeFault(){
   return (kt_bq25601_charge_fault_enum)_readReg(KT_BQ25601_REG09, KT_BQ25601_CHARGE_FAULT_MASK, 4);
 }
 
+/*!
+ *    @brief Battery Fault
+ *    @return True if yes
+ */
 bool KT_BQ25601::isBatFault(){
   return _readReg(KT_BQ25601_REG09, KT_BQ25601_BAT_FAULT_MASK, 3);
 }
 
+/*!
+ *    @brief Get NTC Fault (No fault, warm, cool, cold or hot)
+ *    @return Enum value (KT_BQ25601_NTC_FAULT_NORMAL, KT_BQ25601_NTC_FAULT_WARM, KT_BQ25601_NTC_FAULT_COOL, KT_BQ25601_NTC_FAULT_COLD or KT_BQ25601_NTC_FAULT_HOT)
+ */
 kt_bq25601_ntc_fault_enum KT_BQ25601::getNTCFault(){
   return (kt_bq25601_ntc_fault_enum)_readReg(KT_BQ25601_REG09, KT_BQ25601_NTC_FAULT_MASK, 0);
 }
 
 // REG0A
 
+/*!
+ *    @brief Is VBUS attached
+ *    @return True if yes
+ */
 bool KT_BQ25601::isPowerPresent(){
   return _readReg(KT_BQ25601_REG0A, KT_BQ25601_POWER_PRESENT_MASK, 7);
 }
 
+/*!
+ *    @brief Is in VINDPM
+ *    @return True if yes
+ */
 bool KT_BQ25601::isInputVoltageLimit(){
   return _readReg(KT_BQ25601_REG0A, KT_BQ25601_INPUT_VOLTAGE_LIMIT_STATUS_MASK, 6);
 }
 
+/*!
+ *    @brief Is in IINDPM
+ *    @return True if yes
+ */
 bool KT_BQ25601::isInputCurrentLimit(){
   return _readReg(KT_BQ25601_REG0A, KT_BQ25601_INPUT_CURRENT_LIMIT_STATUS_MASK, 5);
 }
 
+/*!
+ *    @brief Is Top Off Timer counting
+ *    @return True if yes
+ */
 bool KT_BQ25601::isTopOffTimerActive(){
   return _readReg(KT_BQ25601_REG0A, KT_BQ25601_TOPOFF_TIMER_ACTIVE_MASK, 3);
 }
 
+/*!
+ *    @brief Is Device in ACOV
+ *    @return True if yes
+ */
 bool KT_BQ25601::isOvervoltage(){
   return _readReg(KT_BQ25601_REG0A, KT_BQ25601_OVERVOLTAGE_STATUS_MASK, 2);
 }
 
+/*!
+ *    @brief Enable Voltage INT Pulse
+ *    @param enable True to enable, False to disable
+ *    @return True if success
+ */
 bool KT_BQ25601::enableVoltageRegulationInterrupt(bool enable){
   return updateReg(!enable, KT_BQ25601_REG0A, KT_BQ25601_VINDPM_INT_MASK, 1);
 }
 
+/*!
+ *    @brief Enable Current INT Pulse
+ *    @param enable True to enable, False to disable
+ *    @return True if success
+ */
 bool KT_BQ25601::enableCurrentRegulationInterrupt(bool enable){
   return updateReg(!enable, KT_BQ25601_REG0A, KT_BQ25601_IINDPM_INT_MASK, 0);
 }
 
 // REG0B
 
+/*!
+ *    @brief Resets all settings
+ *    @return True if success
+ */
 bool KT_BQ25601::reset(){
   return updateReg(1, KT_BQ25601_REG0B, KT_BQ25601_RESET_MASK, 7);
 }
 
+/*!
+ *    @brief Get Device Part Number (BQ2501 is 0010)
+ *    @return Number in uint8_t
+ */
 uint8_t KT_BQ25601::getPartNumber(){
   return _readReg(KT_BQ25601_REG0B, KT_BQ25601_PART_NUMBER_MASK, 3);
 }
 
+/*!
+ *    @brief Get Device Revision Number
+ *    @return Number in uint8_t
+ */
 uint8_t KT_BQ25601::getDeviceRevision(){
   return _readReg(KT_BQ25601_REG0B, KT_BQ25601_DEV_REV_MASK, 0);
 }

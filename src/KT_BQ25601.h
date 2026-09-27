@@ -173,11 +173,6 @@ enum kt_bq25601_charge_status_enum {
     KT_BQ25601_CHARGE_STATUS_CHARGE_TERMINATION = 3
 };
 
-enum kt_bq25601_power_good_status_enum {
-    KT_BQ25601_POWER_STATUS_NOT_GOOD = 0,
-    KT_BQ25601_POWER_STATUS_GOOD = 1
-};
-
 enum kt_bq25601_thermal_regulation_status_enum {
     KT_BQ25601_THERMAL_REGULATION_OFF = 0,
     KT_BQ25601_THERMAL_REGULATION_ON = 1
@@ -254,7 +249,7 @@ class KT_BQ25601
 
     kt_bq25601_power_status_enum getPowerStatus();
     kt_bq25601_charge_status_enum getChargeStatus();
-    kt_bq25601_power_good_status_enum getPowerGoodStatus();
+    bool isPowerGood();
     kt_bq25601_thermal_regulation_status_enum getThermalRegulationStatus();
     kt_bq25601_sys_regulation_status_enum getSysRegulationStatus();
     bool isWatchdogFault();
