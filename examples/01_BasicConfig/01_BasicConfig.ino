@@ -12,8 +12,8 @@
 #include "KT_BQ25601.h"
 
 // Your I2C pins
-#define SCL 8
-#define SDA 9
+#define I2C_SDA 8
+#define I2C_SCL 9
 
 // Only for reference, Li-Po 3.7 V
 #define BATTERY_CAPACITY_MAH 800
@@ -24,9 +24,9 @@ void setup(){
     Serial.begin(115200);
     delay(1000);
 
-    Wire.begin(SDA, SCL);
+    Wire.begin(I2C_SDA, I2C_SCL);
 
-    while (!Charger.begin(Wire)) {
+    while (!Charger.begin(&Wire)) {
         Serial.println("Couldnt find BQ25601.");
         delay(2000);
     }
@@ -49,11 +49,25 @@ void setup(){
     uint16_t preChargeCurrent = Charger.getPrechargeCurrent();
     uint16_t terminationCurrent = Charger.getTerminationCurrent();
 
-    Serial.printf("Input Current Limit: %d mA\n", inputCurrentLimit);
-    Serial.printf("Charge Voltage: %d mV\n", chargeVoltage);
-    Serial.printf("Charge Current: %d mA \n", chargeCurrent);
-    Serial.printf("Precharge Current: %d mA \n", preChargeCurrent);
-    Serial.printf("Termination Current: %d mA\n", terminationCurrent);
+    Serial.print(F("Input Current Limit: "));
+    Serial.print(inputCurrentLimit);
+    Serial.println(F(" mA"));
+
+    Serial.print(F("Charge Voltage: "));
+    Serial.print(chargeVoltage);
+    Serial.println(F(" mV"));
+
+    Serial.print(F("Charge Current: "));
+    Serial.print(chargeCurrent);
+    Serial.println(F(" mA"));
+
+    Serial.print(F("Precharge Current: "));
+    Serial.print(preChargeCurrent);
+    Serial.println(F(" mA"));
+
+    Serial.print(F("Termination Current: "));
+    Serial.print(terminationCurrent);
+    Serial.println(F(" mA"));
 }
 
 void loop(){}

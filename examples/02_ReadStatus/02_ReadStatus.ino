@@ -12,8 +12,8 @@
 #include "KT_BQ25601.h"
 
 // Your I2C pins
-#define SCL 8
-#define SDA 9
+#define I2C_SDA 8
+#define I2C_SCL 9
 
 // Only for reference, Li-Po 3.7 V
 #define BATTERY_CAPACITY_MAH 800
@@ -30,9 +30,9 @@ void setup(){
     Serial.begin(115200);
     delay(1000);
 
-    Wire.begin(SDA, SCL);
+    Wire.begin(I2C_SDA, I2C_SCL);
 
-    while (!Charger.begin(Wire)) {
+    while (!Charger.begin(&Wire)) {
         Serial.println("Couldnt find BQ25601.");
         delay(2000);
     }

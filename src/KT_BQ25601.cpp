@@ -33,9 +33,11 @@ uint8_t KT_BQ25601::_readRegister(uint8_t reg) {
  *            The Wire object (I2C)
  *    @return True if success
  */
-bool KT_BQ25601::begin(TwoWire &wire){
+bool KT_BQ25601::begin(TwoWire *wire){
 
-  _wire = &wire;
+  if (wire != nullptr) {
+    _wire = wire;
+  }
 
   if(!isConnected()){
 
@@ -65,22 +67,21 @@ bool KT_BQ25601::isConnected(){
   return ( _wire->endTransmission() == 0);
 }
 
-void KT_BQ25601::_writeRegister(uint8_t reg, uint8_t value){
+bool KT_BQ25601::_writeRegister(uint8_t reg, uint8_t value){
 
   _wire -> beginTransmission(KT_BQ25601_ADDR);
   _wire -> write(reg);
 
   _wire -> write(value);
 
-  _wire -> endTransmission();
+  return (_wire -> endTransmission() == 0);
 }
 
 bool KT_BQ25601::updateReg(uint8_t value, uint8_t reg, uint8_t mask, int offset){
   uint8_t regVal = _readRegister(reg);
   regVal &= ~mask;
   regVal |= ((value << offset) & mask);
-  _writeRegister(reg, regVal);
-  return true;
+  return _writeRegister(reg, regVal);
 }
 
 uint8_t KT_BQ25601::_readReg(uint8_t reg, uint8_t mask, int offset){
@@ -213,7 +214,7 @@ bool KT_BQ25601::isOTGEnabled(){
  *    @param limit Enum value to set current (KT_BQ25601_CURRENT_LIMIT_OTG_0A5 or KT_BQ25601_CURRENT_LIMIT_OTG_1A2)
  *    @return True if success
  */
-bool KT_BQ25601::setCurrentLImitOTG(kt_bq25601_current_limit_otg_enum limit){
+bool KT_BQ25601::setCurrentLimitOTG(kt_bq25601_current_limit_otg_enum limit){
   return updateReg(limit, KT_BQ25601_REG02, KT_BQ25601_SET_CURRENT_LIMIT_OTG_MASK, 7);
 }
 
@@ -563,7 +564,7 @@ bool KT_BQ25601::isOTGFault(){
 
 /*!
  *    @brief Get Charge Fault (No fault, input fault, thermal shutdown or charge safety timer expiration)
- *    @return Enum value (KT_BQ25601_CHARGE_FAULT_NORMAL, KT_BQ25601_CHARGE_FAULT_INPUT_FAULT, KT_BQ25601_CHARGE_FAULT_THERMAL_SHUTDOWM or KT_BQ25601_CHARGE_FAULT_CHARGE_SAFETY_TIMER_EXPIRATION)
+ *    @return Enum value (KT_BQ25601_CHARGE_FAULT_NORMAL, KT_BQ25601_CHARGE_FAULT_INPUT_FAULT, KT_BQ25601_CHARGE_FAULT_THERMAL_SHUTDOWN or KT_BQ25601_CHARGE_FAULT_CHARGE_SAFETY_TIMER_EXPIRATION)
  */
 kt_bq25601_charge_fault_enum KT_BQ25601::getChargeFault(){
   return (kt_bq25601_charge_fault_enum)_readReg(KT_BQ25601_REG09, KT_BQ25601_CHARGE_FAULT_MASK, 4);

@@ -101,7 +101,7 @@ enum kt_bq25601_sys_min_voltage_enum {
 
 enum kt_bq25601_enable_stat_enum {
     KT_BQ25601_ENABLE_STAT = 0,
-    KT_BQ25601_DISBALE_STAT = 3
+    KT_BQ25601_DISABLE_STAT = 3
 };
 
 enum kt_bq25601_min_voltage_otg_enum {
@@ -195,7 +195,7 @@ enum kt_bq25601_sys_regulation_status_enum {
 enum kt_bq25601_charge_fault_enum {
     KT_BQ25601_CHARGE_FAULT_NORMAL = 0,
     KT_BQ25601_CHARGE_FAULT_INPUT_FAULT = 1,
-    KT_BQ25601_CHARGE_FAULT_THERMAL_SHUTDOWM = 2,
+    KT_BQ25601_CHARGE_FAULT_THERMAL_SHUTDOWN = 2,
     KT_BQ25601_CHARGE_FAULT_CHARGE_SAFETY_TIMER_EXPIRATION = 3
 };
 
@@ -217,7 +217,7 @@ class KT_BQ25601
     public:
     explicit KT_BQ25601(TwoWire *wire = &Wire);
 
-    bool begin(TwoWire &wire = Wire);
+    bool begin(TwoWire *wire = nullptr);
     bool isConnected();
     bool enableCharging(bool enable);
     bool enableOTG(bool enable);
@@ -229,7 +229,7 @@ class KT_BQ25601
     bool enableHIZ(bool enable);
     bool enableSTAT(kt_bq25601_enable_stat_enum enable);
     bool setInputCurrentLimit(uint16_t current_mA);
-    bool setCurrentLImitOTG(kt_bq25601_current_limit_otg_enum limit);
+    bool setCurrentLimitOTG(kt_bq25601_current_limit_otg_enum limit);
     bool enableQ1FullOn(bool enable);
     bool setChargeCurrent(uint16_t current_mA);
     bool setPrechargeCurrent(uint16_t current_mA);
@@ -287,7 +287,7 @@ class KT_BQ25601
     private:
 
     uint8_t _readRegister(uint8_t reg);
-    void _writeRegister(uint8_t reg, uint8_t value);
+    bool _writeRegister(uint8_t reg, uint8_t value);
     bool updateReg(uint8_t value, uint8_t reg, uint8_t mask, int offset);
     uint8_t _readReg(uint8_t reg, uint8_t mask, int offset);
 
