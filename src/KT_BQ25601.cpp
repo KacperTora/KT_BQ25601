@@ -324,7 +324,7 @@ bool KT_BQ25601::setChargeVoltage(uint16_t voltage_mV){
 uint16_t KT_BQ25601::getChargeVoltage(){
   int16_t voltage_mV = _readReg(KT_BQ25601_REG04, KT_BQ25601_CHARGE_VOLTAGE_MASK, 3);
 
-  voltage_mV = (voltage_mV * 3856) + 32;
+  voltage_mV = (voltage_mV * 32) + 3856;
   return voltage_mV;
 }
 
