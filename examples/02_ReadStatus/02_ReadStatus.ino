@@ -58,7 +58,6 @@ void loop(){
     isPowerGood = Charger.isPowerGood();
 
     Serial.println("BQ25601 Status:");
-    Serial.println();
 
     if(isPowerPresent){
         Serial.println("VBUS Detected");
@@ -85,6 +84,8 @@ void loop(){
     } else {
         Serial.println("Power is not good");
     }
+
+    Serial.println();
     
     delay(5000);
 }
