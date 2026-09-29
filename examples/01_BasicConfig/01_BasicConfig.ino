@@ -9,15 +9,8 @@
 
 #include <Arduino.h>
 #include <Wire.h>
-#include "KT_BQ25601.h"
+#include <KT_BQ25601.h>
 
-// Your I2C pins
-#if defined(ESP32)
-  #define I2C_SDA 8
-  #define I2C_SCL 9
-#endif
-
-// Only for reference, Li-Po 3.7 V
 #define BATTERY_CAPACITY_MAH 800
 
 KT_BQ25601 Charger;
@@ -26,11 +19,7 @@ void setup(){
     Serial.begin(115200);
     delay(1000);
 
-    #if defined(ESP32)
-        Wire.begin(I2C_SDA, I2C_SCL);
-    #else
-        Wire.begin();
-    #endif
+    Wire.begin();
 
     while (!Charger.begin(&Wire)) {
         Serial.println("Couldnt find BQ25601.");
@@ -43,7 +32,7 @@ void setup(){
     Serial.println(Charger.getDeviceRevision(), HEX);
 
     // 0.5C = 400 mA
-    Charger.setChargeCurrent(400);
+    Charger.setChargeCurrent(BATTERY_CAPACITY_MAH / 2);
     Charger.setPrechargeCurrent(60);
     Charger.setTerminationCurrent(60);
     Charger.setInputCurrentLimit(500);

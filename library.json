@@ -12,7 +12,6 @@
   [
     {
       "name": "Kacper Tora",
-      "email": "kacper.tora@gmail.com",
       "maintainer": true
     }
   ],
@@ -25,7 +24,8 @@
       ".pio",
       ".vscode",
       ".git*",
-      "platformio.ini"
+      "platformio.ini",
+      "extras"
     ]
   }
 }
