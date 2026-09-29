@@ -3,7 +3,7 @@ Arduino and PlatformIO library for Texas Instruments BQ25601 I2C battery charger
 <p align="center">
   <img src="extras/bq25601_pic.png" alt="KT_BQ25601 Board" width="600">
 </p>
-The library was tested with this BQ25601 Module that I designed.
+The library was tested with BQ25601 Module that I designed.
 
 ## Documentation & References
 
