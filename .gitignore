@@ -7,3 +7,8 @@
 .vscode/ipch
 compile_commands.json
 .vscode
+*.ino.cpp
+platformio.ini
+*.tar.gz
+*.tgz
+*.zip

@@ -1,0 +1,31 @@
+{
+  "name": "KT_BQ25601",
+  "version": "1.0.1",
+  "description": "Arduino library for Texas Instruments BQ25601 I2C battery charger.",
+  "keywords": "bq25601,charger,esp32,arduino,i2c,battery",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/KacperTora/KT_BQ25601.git"
+  },
+  "authors":
+  [
+    {
+      "name": "Kacper Tora",
+      "email": "kacper.tora@gmail.com",
+      "maintainer": true
+    }
+  ],
+  "license": "GPL-3.0",
+  "frameworks": "arduino",
+  "platforms": "*",
+  "export": {
+    "exclude": [
+      "*.ino.cpp",
+      ".pio",
+      ".vscode",
+      ".git*",
+      "platformio.ini"
+    ]
+  }
+}
