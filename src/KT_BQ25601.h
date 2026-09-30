@@ -201,8 +201,8 @@ enum kt_bq25601_charge_fault_enum {
 
 enum kt_bq25601_ntc_fault_enum {
     KT_BQ25601_NTC_FAULT_NORMAL = 0,
-    KT_BQ25601_NTC_FAULT_WARM = 1,
-    KT_BQ25601_NTC_FAULT_COOL = 2,
+    KT_BQ25601_NTC_FAULT_WARM = 2,
+    KT_BQ25601_NTC_FAULT_COOL = 3,
     KT_BQ25601_NTC_FAULT_COLD = 5,
     KT_BQ25601_NTC_FAULT_HOT = 6
 };
