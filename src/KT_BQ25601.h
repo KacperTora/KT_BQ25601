@@ -288,7 +288,7 @@ class KT_BQ25601
 
     uint8_t _readRegister(uint8_t reg);
     bool _writeRegister(uint8_t reg, uint8_t value);
-    bool updateReg(uint8_t value, uint8_t reg, uint8_t mask, int offset);
+    bool _updateReg(uint8_t value, uint8_t reg, uint8_t mask, int offset);
     uint8_t _readReg(uint8_t reg, uint8_t mask, int offset);
 
     TwoWire* _wire;
