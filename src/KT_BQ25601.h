@@ -212,6 +212,14 @@ enum kt_bq25601_charge_safety_timer_enum {
     KT_BQ25601_CHARGE_SAFETY_TIMER_10H = 1
 };
 
+struct kt_bq25601_faults {
+    bool watchdogFault;
+    bool otgFault;
+    kt_bq25601_charge_fault_enum chargeFault;
+    bool batFault;
+    kt_bq25601_ntc_fault_enum ntcFault;
+};
+
 class KT_BQ25601
 {
     public:
@@ -266,6 +274,7 @@ class KT_BQ25601
     kt_bq25601_charge_fault_enum getChargeFault();
     bool isBatFault();
     kt_bq25601_ntc_fault_enum getNTCFault();
+    kt_bq25601_faults getFaults();
     bool isPowerPresent();
     bool isInputVoltageLimit();
     bool isInputCurrentLimit();

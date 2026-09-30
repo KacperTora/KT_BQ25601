@@ -548,6 +548,7 @@ kt_bq25601_sys_regulation_status_enum KT_BQ25601::getSysRegulationStatus(){
 
 /*!
  *    @brief Watchdog Timer Expiration
+ *    @note Getting one fault clears other faults (use getFaults function)
  *    @return True if yes
  */
 bool KT_BQ25601::isWatchdogFault(){
@@ -556,6 +557,7 @@ bool KT_BQ25601::isWatchdogFault(){
 
 /*!
  *    @brief VBUS overloaded in OTG, or VBUS OVP, or battery is too low
+ *    @note Getting one fault clears other faults (use getFaults function)
  *    @return True if yes
  */
 bool KT_BQ25601::isOTGFault(){
@@ -564,6 +566,7 @@ bool KT_BQ25601::isOTGFault(){
 
 /*!
  *    @brief Get Charge Fault (No fault, input fault, thermal shutdown or charge safety timer expiration)
+ *    @note Getting one fault clears other faults (use getFaults function)
  *    @return Enum value (KT_BQ25601_CHARGE_FAULT_NORMAL, KT_BQ25601_CHARGE_FAULT_INPUT_FAULT, KT_BQ25601_CHARGE_FAULT_THERMAL_SHUTDOWN or KT_BQ25601_CHARGE_FAULT_CHARGE_SAFETY_TIMER_EXPIRATION)
  */
 kt_bq25601_charge_fault_enum KT_BQ25601::getChargeFault(){
@@ -572,6 +575,7 @@ kt_bq25601_charge_fault_enum KT_BQ25601::getChargeFault(){
 
 /*!
  *    @brief Battery Fault
+ *    @note Getting one fault clears other faults (use getFaults function)
  *    @return True if yes
  */
 bool KT_BQ25601::isBatFault(){
@@ -580,10 +584,26 @@ bool KT_BQ25601::isBatFault(){
 
 /*!
  *    @brief Get NTC Fault (No fault, warm, cool, cold or hot)
+ *    @note Getting one fault clears other faults (use getFaults function)
  *    @return Enum value (KT_BQ25601_NTC_FAULT_NORMAL, KT_BQ25601_NTC_FAULT_WARM, KT_BQ25601_NTC_FAULT_COOL, KT_BQ25601_NTC_FAULT_COLD or KT_BQ25601_NTC_FAULT_HOT)
  */
 kt_bq25601_ntc_fault_enum KT_BQ25601::getNTCFault(){
   return (kt_bq25601_ntc_fault_enum)_readReg(KT_BQ25601_REG09, KT_BQ25601_NTC_FAULT_MASK, 0);
+}
+
+/*!
+ *    @brief Get All Faults
+ *    @return Struct value (watchdogFault, otgFault, chargeFault, batFault and ntcFault)
+ */
+kt_bq25601_faults KT_BQ25601::getFaults(){
+  uint8_t regVal = _readRegister(KT_BQ25601_REG09);
+  kt_bq25601_faults f;
+  f.watchdogFault = (regVal & KT_BQ25601_WATCHDOG_FAULT_MASK) >> 7;
+  f.otgFault = (regVal & KT_BQ25601_OTG_FAULT_MASK) >> 6;
+  f.chargeFault = (kt_bq25601_charge_fault_enum)((regVal & KT_BQ25601_CHARGE_FAULT_MASK) >> 4);
+  f.batFault = (regVal & KT_BQ25601_BAT_FAULT_MASK) >> 3;
+  f.ntcFault = (kt_bq25601_ntc_fault_enum)(regVal & KT_BQ25601_NTC_FAULT_MASK);
+  return f;
 }
 
 // REG0A
