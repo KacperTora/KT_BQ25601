@@ -4,26 +4,26 @@
 [![PlatformIO Registry](https://img.shields.io/badge/PlatformIO-Registry-F58225?logo=platformio)](https://registry.platformio.org/)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-Arduino and PlatformIO C++ library for the **Texas Instruments BQ25601** 3A single-cell Li-Ion / LiPo battery charger, power-path management IC, and OTG boost converter.
+Arduino and PlatformIO C++ library for the Texas Instruments BQ25601 3A single-cell Li-Ion / LiPo battery charger, power-path management IC, and OTG boost converter.
 
 <p align="center">
   <img src="extras/bq25601_pic.png" alt="KT_BQ25601 Board" width="600">
 </p>
 
-Tested and validated on custom hardware powered by the Texas Instruments BQ25601.
+Tested and validated on custom hardware powered by the Texas Instruments BQ25601. (Contact me on github if you are interested in this module)
 
 ---
 
 ## Key Features
 
-* **Complete Hardware Coverage:** Full register abstraction (REG00 through REG0B).
+* **Complete Hardware Coverage:** Full register (REG00 through REG0B).
 * **NVDC Power-Path Management:** Regulate system voltage dynamically while charging single-cell batteries.
 * **Configurable Charge Parameters:** Fast charge current (up to 3000 mA), pre-charge, termination, and battery regulation voltage.
 * **Dynamic Power Management (DPM):** Input voltage (VINDPM) and input current (IINDPM) limiting to prevent host port or weak adapter collapse.
 * **OTG Boost Converter:** Step up battery voltage to power external USB accessories.
 * **Watchdog Protection:** Configurable watchdog timer control.
 * **Low-Power Shipping Mode:** Disconnect BATFET to prevent self-discharge during long storage or transit.
-* **Cross-Platform Compatibility:** Works seamlessly with ESP32, ESP8266, STM32, RP2040, and Arduino AVR architectures.
+* **Cross-Platform Compatibility:** Works with ESP32, ESP8266, STM32, RP2040, and Arduino AVR architectures.
 
 ---
 
@@ -36,9 +36,9 @@ The BQ25601 communicates over standard I2C (7-bit address: `0x6B`).
 | **SDA** | MCU SDA | Requires 4.7kΩ – 10kΩ pull-up |
 | **SCL** | MCU SCL | Requires 4.7kΩ – 10kΩ pull-up|
 | **GND** | System GND | Ground |
-| **INT** | Digital GPIO | Active-low interrupt pulse (optional) |
+| **INT** | Digital GPIO | Active-low interrupt |
 | **STAT** | Status LED | Open-drain charging status indicator |
-| **PG** | Status LED | Open-drain power good status indicator |
+| **PG** | Status LED | Open-drain power good indicator |
 
 ---
 
@@ -94,9 +94,9 @@ void setup(){
   Serial.print(chargeCurrent);
   Serial.println(F(" mA"));
 
-    Serial.print(F("Precharge Current: "));
-    Serial.print(preChargeCurrent);
-    Serial.println(F(" mA"));
+  Serial.print(F("Precharge Current: "));
+  Serial.print(preChargeCurrent);
+  Serial.println(F(" mA"));
 
   Serial.print(F("Termination Current: "));
   Serial.print(terminationCurrent);
