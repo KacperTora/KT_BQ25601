@@ -532,6 +532,23 @@ kt_bq25601_charge_status_enum KT_BQ25601::getChargeStatus(){
 }
 
 /*!
+ *    @brief Is Battery Charging
+ *    @return True if yes
+ */
+bool KT_BQ25601::isCharging() {
+  kt_bq25601_charge_status_enum status = getChargeStatus();
+  return (status == KT_BQ25601_CHARGE_STATUS_PRE_CHARGE ||  status == KT_BQ25601_CHARGE_STATUS_FAST_CHARGING);
+}
+
+/*!
+ *    @brief Is Battery Charged
+ *    @return True if yes
+ */
+bool KT_BQ25601::isCharged() {
+  return (getChargeStatus() == KT_BQ25601_CHARGE_STATUS_CHARGE_TERMINATION);
+}
+
+/*!
  *    @brief Get Power Good Status
  *    @return True if good, False if not good
  */

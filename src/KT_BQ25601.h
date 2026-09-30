@@ -266,6 +266,8 @@ class KT_BQ25601
 
     kt_bq25601_power_status_enum getPowerStatus();
     kt_bq25601_charge_status_enum getChargeStatus();
+    bool isCharging();
+    bool isCharged();
     bool isPowerGood();
     kt_bq25601_thermal_regulation_status_enum getThermalRegulationStatus();
     kt_bq25601_sys_regulation_status_enum getSysRegulationStatus();

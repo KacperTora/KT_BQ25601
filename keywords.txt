@@ -3,17 +3,17 @@
 #######################################
 
 KT_BQ25601	KEYWORD1
-kt_bq25601_enable_stat_enum	KEYWORD1
+kt_bq25601_faults	KEYWORD1
+kt_bq25601_watchdog_enum	KEYWORD1
 kt_bq25601_sys_min_voltage_enum	KEYWORD1
+kt_bq25601_enable_stat_enum	KEYWORD1
 kt_bq25601_min_voltage_otg_enum	KEYWORD1
 kt_bq25601_current_limit_otg_enum	KEYWORD1
 kt_bq25601_topoff_timer_enum	KEYWORD1
 kt_bq25601_recharge_threshold_enum	KEYWORD1
-kt_bq25601_watchdog_enum	KEYWORD1
-kt_bq25601_charge_safety_timer_enum	KEYWORD1
 kt_bq25601_thermal_regulation_threshold_enum	KEYWORD1
 kt_bq25601_cool_temperature_current_limit_enum	KEYWORD1
-kt_bq25601_ovp_enum KEYWORD1
+kt_bq25601_ovp_enum	KEYWORD1
 kt_bq25601_regulation_voltage_otg_enum	KEYWORD1
 kt_bq25601_warm_temperature_voltage_setting_enum	KEYWORD1
 kt_bq25601_batfet_delay_enum	KEYWORD1
@@ -24,6 +24,7 @@ kt_bq25601_thermal_regulation_status_enum	KEYWORD1
 kt_bq25601_sys_regulation_status_enum	KEYWORD1
 kt_bq25601_charge_fault_enum	KEYWORD1
 kt_bq25601_ntc_fault_enum	KEYWORD1
+kt_bq25601_charge_safety_timer_enum	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -31,32 +32,25 @@ kt_bq25601_ntc_fault_enum	KEYWORD1
 
 begin	KEYWORD2
 isConnected	KEYWORD2
-updateReg	KEYWORD2
+enableCharging	KEYWORD2
+enableOTG	KEYWORD2
+setWatchdog	KEYWORD2
+resetWatchdog	KEYWORD2
+setMinVoltage	KEYWORD2
+minVoltageOTG	KEYWORD2
+enablePFM	KEYWORD2
 enableHIZ	KEYWORD2
 enableSTAT	KEYWORD2
 setInputCurrentLimit	KEYWORD2
-getInputCurrentLimit	KEYWORD2
-enablePFM	KEYWORD2
-resetWatchdog	KEYWORD2
-enableOTG	KEYWORD2
-enableCharging	KEYWORD2
-setMinVoltage	KEYWORD2
-minVoltageOTG	KEYWORD2
-isChargingEnabled	KEYWORD2
-isOTGEnabled	KEYWORD2
 setCurrentLimitOTG	KEYWORD2
 enableQ1FullOn	KEYWORD2
 setChargeCurrent	KEYWORD2
-getChargeCurrent	KEYWORD2
 setPrechargeCurrent	KEYWORD2
-getPrechargeCurrent	KEYWORD2
 setTerminationCurrent	KEYWORD2
 setChargeVoltage	KEYWORD2
-getChargeVoltage	KEYWORD2
 setTopOffTimer	KEYWORD2
 setRechargeThreshold	KEYWORD2
 enableTermination	KEYWORD2
-setWatchdog	KEYWORD2
 enableSafetyTimer	KEYWORD2
 setChargeSafetyTimer	KEYWORD2
 setThermalRegulationThreshold	KEYWORD2
@@ -71,8 +65,13 @@ setWarmTemperatureVoltageSetting	KEYWORD2
 setBatfetDelay	KEYWORD2
 enableBatfetResetFunction	KEYWORD2
 setBatTracking	KEYWORD2
+enableVoltageRegulationInterrupt	KEYWORD2
+enableCurrentRegulationInterrupt	KEYWORD2
+reset	KEYWORD2
 getPowerStatus	KEYWORD2
 getChargeStatus	KEYWORD2
+isCharging	KEYWORD2
+isCharged	KEYWORD2
 isPowerGood	KEYWORD2
 getThermalRegulationStatus	KEYWORD2
 getSysRegulationStatus	KEYWORD2
@@ -81,16 +80,24 @@ isOTGFault	KEYWORD2
 getChargeFault	KEYWORD2
 isBatFault	KEYWORD2
 getNTCFault	KEYWORD2
+getFaults	KEYWORD2
 isPowerPresent	KEYWORD2
 isInputVoltageLimit	KEYWORD2
 isInputCurrentLimit	KEYWORD2
 isTopOffTimerActive	KEYWORD2
 isOvervoltage	KEYWORD2
-enableVoltageRegulationInterrupt	KEYWORD2
-enableCurrentRegulationInterrupt	KEYWORD2
-reset	KEYWORD2
 getPartNumber	KEYWORD2
 getDeviceRevision	KEYWORD2
+getInputCurrentLimit	KEYWORD2
+getChargeCurrent	KEYWORD2
+getPrechargeCurrent	KEYWORD2
+getChargeVoltage	KEYWORD2
+getTerminationCurrent	KEYWORD2
+getInputVoltageThreshold	KEYWORD2
+isChargingEnabled	KEYWORD2
+isOTGEnabled	KEYWORD2
+setDebugPort	KEYWORD2
+disableDebug	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
@@ -159,8 +166,8 @@ KT_BQ25601_CHARGE_FAULT_NORMAL	LITERAL1
 KT_BQ25601_CHARGE_FAULT_INPUT_FAULT	LITERAL1
 KT_BQ25601_CHARGE_FAULT_THERMAL_SHUTDOWN	LITERAL1
 KT_BQ25601_CHARGE_FAULT_CHARGE_SAFETY_TIMER_EXPIRATION	LITERAL1
-KT_BQ25601_NTC_FAULT_NORMAL LITERAL1
-KT_BQ25601_NTC_FAULT_WARM   LITERAL1
+KT_BQ25601_NTC_FAULT_NORMAL	LITERAL1
+KT_BQ25601_NTC_FAULT_WARM	LITERAL1
 KT_BQ25601_NTC_FAULT_COOL	LITERAL1
 KT_BQ25601_NTC_FAULT_COLD	LITERAL1
 KT_BQ25601_NTC_FAULT_HOT	LITERAL1
