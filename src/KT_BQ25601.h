@@ -287,6 +287,7 @@ class KT_BQ25601
     uint16_t getPrechargeCurrent();
     uint16_t getChargeVoltage();
     uint16_t getTerminationCurrent();
+    uint16_t getInputVoltageThreshold();
     bool isChargingEnabled();
     bool isOTGEnabled();
 

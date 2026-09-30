@@ -437,6 +437,17 @@ bool KT_BQ25601::setInputVoltageThreshold(uint16_t voltage_mV){
   return _updateReg(voltage_mV, KT_BQ25601_REG06, KT_BQ25601_INPUT_VOLTAGE_THRESHOLD_MASK, 0);
 }
 
+/*!
+ *    @brief Get Input Voltage Threshold (VINDPM)
+ *    @return Voltage in millivolts
+ */
+uint16_t KT_BQ25601::getInputVoltageThreshold() {
+  int16_t voltage_mV = _readReg(KT_BQ25601_REG06, KT_BQ25601_INPUT_VOLTAGE_THRESHOLD_MASK, 0);
+
+  voltage_mV = (voltage_mV * 100) + 3900;
+  return voltage_mV;
+}
+
 // REG07
 
 /*!
